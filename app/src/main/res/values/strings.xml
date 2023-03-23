@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">bearpilldiary</string>
+    <string name="kg">KG</string>
+    <string name="cm">CM</string>
+    <string name="calculate">calculate</string>
+    <string name="normal_range">(normal range: 18.5 – 24.9)</string>
+    <string name="weight">WEIGHT</string>
+    <string name="height">HEIGHT</string>
+    <string name="reset">RESET</string>
+</resources>
