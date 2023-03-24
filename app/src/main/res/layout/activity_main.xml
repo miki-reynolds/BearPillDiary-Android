@@ -145,7 +145,7 @@
     </androidx.cardview.widget.CardView>
 
     <Button
-        android:id="@+id/btnSubmit"
+        android:id="@+id/btnCalculate"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:backgroundTint="#857185"
@@ -163,16 +163,17 @@
         app:layout_constraintWidth_percent="0.5"
         app:rippleColor="@color/pinkHue" />
 
+
     <Button
         android:id="@+id/btnReset"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:backgroundTint="#857185"
         android:text="@string/reset"
+        android:visibility="invisible"
         android:textSize="25sp"
         android:textStyle="bold"
         app:cornerRadius="20dp"
-        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_percent="0.08"

@@ -1,71 +1,42 @@
 package com.kaisha.bearpilldiary
 
+import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
+import com.kaisha.bearpilldiary.databinding.ActivityMainBinding
 
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var btnCalculate: Button
-    private lateinit var btnReset: Button
-    private lateinit var inputWeight: EditText
-    private lateinit var inputHeight: EditText
-    private lateinit var resultIndex: TextView
-    private lateinit var resultDescription: TextView
-    private lateinit var resultInfo: TextView
+    private lateinit var binding: ActivityMainBinding
     private lateinit var sharePreferences: SharedPreferences
     private lateinit var sfEdittor: SharedPreferences.Editor
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        val utilsClass = Utils(this, binding)
 
-        val utilsClass = Utils(this)
-        btnCalculate = findViewById(R.id.btnSubmit)
-        btnReset = findViewById(R.id.btnReset)
-        inputWeight = findViewById(R.id.inputWeight)
-        inputHeight = findViewById(R.id.inputHeight)
-        resultIndex = findViewById(R.id.resultIndex)
-        resultDescription = findViewById(R.id.resultDescription)
-        resultInfo = findViewById(R.id.resultInfo)
         sharePreferences = getSharedPreferences("mySharedPreferences", MODE_PRIVATE)
         sfEdittor = sharePreferences.edit()
 
-        btnCalculate.setOnClickListener {
-            val weight = inputWeight.text.toString()
-            val height = inputHeight.text.toString()
-
-            if (utilsClass.validateInput(weight, height)) {
-                val bmi = utilsClass.calculateBMI(weight, height)
-                utilsClass.disyplayResult(bmi, resultIndex, resultDescription, resultInfo)
-                btnCalculate.visibility = View.INVISIBLE
-                btnReset.visibility = View.VISIBLE
-            }
+        binding.btnCalculate.setOnClickListener {
+            utilsClass.calculate()
         }
-
-        btnReset.setOnClickListener {
-            btnCalculate.visibility = View.VISIBLE
-            btnReset.visibility = View.INVISIBLE
-            inputWeight.text.clear()
-            inputHeight.text.clear()
-            resultIndex.text = ""
-            resultDescription.text = ""
-            resultInfo.text = ""
+        binding.btnReset.setOnClickListener {
+            utilsClass.reset()
         }
     }
 
     // Data Persistence with SharedPreferences (key-value pairs - small data)
     override fun onPause() {
         super.onPause()
-        val currentWeight = inputWeight.text.toString().toFloat()
-        val currentHeight = inputHeight.text.toString().toFloat()
-        val currentResultIndex = resultIndex.text.toString().toFloat()
-        val currentResultDescription = resultDescription.text.toString()
-        val currentResultInfo = resultInfo.text.toString()
+        val currentWeight = binding.inputWeight.text.toString().toFloat()
+        val currentHeight = binding.inputHeight.text.toString().toFloat()
+        val currentResultIndex = binding.resultIndex.text.toString().toFloat()
+        val currentResultDescription = binding.resultDescription.text.toString()
+        val currentResultInfo = binding.resultInfo.text.toString()
 
         sfEdittor.apply() {
             putFloat("sf_weight", currentWeight)
@@ -86,10 +57,11 @@ class MainActivity : AppCompatActivity() {
         val currentResultDescription = sharePreferences.getString("sf_resultDescription", "")
         val currentResultInfo = sharePreferences.getString("sf_resultInfo", "")
 
-        inputWeight.setText(currentWeight.toString())
-        inputHeight.setText(currentHeight.toString())
-        resultIndex.setText(currentResultIndex.toString())
-        resultDescription.setText(currentResultDescription)
-        resultDescription.setText(currentResultInfo)
+        binding.inputWeight.setText(currentWeight.toString())
+        binding.inputHeight.setText(currentHeight.toString())
+        binding.resultIndex.setText(currentResultIndex.toString())
+        binding.resultDescription.setText(currentResultDescription)
+        binding.resultInfo.setText(currentResultInfo)
     }
+
 }

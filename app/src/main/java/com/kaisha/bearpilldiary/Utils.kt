@@ -1,11 +1,36 @@
 package com.kaisha.bearpilldiary
 
 import android.content.Context
+import android.view.View
+import android.widget.Button
+import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import com.kaisha.bearpilldiary.databinding.ActivityMainBinding
 
 
-class Utils(private val context: Context) {
+class Utils(private val context: Context, private val binding: ActivityMainBinding) {
+    fun calculate() {
+        val weight = binding.inputWeight.text.toString()
+        val height = binding.inputHeight.text.toString()
+
+        if (validateInput(weight, height)) {
+            val bmi = calculateBMI(weight, height)
+            disyplayResult(bmi, binding.resultIndex, binding.resultDescription, binding.resultInfo)
+            binding.btnCalculate.visibility = View.INVISIBLE
+            binding.btnReset.visibility = View.VISIBLE
+        }
+    }
+
+    fun reset() {
+        binding.inputWeight.text.clear()
+        binding.inputHeight.text.clear()
+        binding.resultIndex.text = ""
+        binding.resultDescription.text = ""
+        binding.resultInfo.text = ""
+        binding.btnCalculate.visibility = View.VISIBLE
+        binding.btnReset.visibility = View.INVISIBLE
+    }
 
     fun validateInput(weight: String?, height: String?) : Boolean {
         return when {
@@ -52,4 +77,8 @@ class Utils(private val context: Context) {
         resultDescription.text = resultText
         resultInfo.text = context.getString(R.string.normal_range)
     }
+
+
+
+
 }
